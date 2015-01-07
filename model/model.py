@@ -5,7 +5,7 @@ import torndb
 
 NewsDatabase = torndb.Connection(
     "127.0.0.1",
-    "cippusrightpeter",
+    "social_cal",
     "test",
     "woludie",
 )
