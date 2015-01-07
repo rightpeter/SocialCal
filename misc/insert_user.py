@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import util.myTools as myTools
 
 def insert_rightpeter():
