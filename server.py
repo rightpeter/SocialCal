@@ -8,6 +8,7 @@ from controller.web import *
 
 class Application(tornado.web.Application):
     handler = [
-        ('/', MainHandler)
+        ('/', MainHandler),
+        ('/signup', SignupHandler)
     ]
 

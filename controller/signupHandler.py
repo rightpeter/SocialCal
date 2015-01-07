@@ -1,12 +1,26 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
-import tornado
+import sys
+import os
+import re
+import time
+import json
+import tornado.web
+import tornado.ioloop
+import tornado.httpclient
+# tornado 3.x nolonger have this. use torndb
+#import tornado.database
+import torndb
+import math
+import httplib
+import json
+import pickle
+import datetime
+import threading
+from config import *
+from model import *
 import util.myTools as myTools
-
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write('Hello Social Calendar!')
 
 class SignupHandler(myTools.BaseHandler):
     def get(self):
@@ -23,12 +37,26 @@ class SignupHandler(myTools.BaseHandler):
         self.render('signup.html', user=user, url='/', login_state=login_state)
 
     def post(self):
-        myTools.request_info()
+        print 'post: '
+        if ( myTools.is_a_attack(self) ):
+            print 'is_a_attack'
+            return 
+      
+        print 'sign up post!'
         user = {}
         user['email'] = self.get_argument('email')
         user['name'] = self.get_argument('name')
         user['password'] = self.get_argument('password')
         re_password = self.get_argument('repassword')
+
+        print '''-
+        ----- user -----
+        -'''
+        print user
+        print 're_password: ', re_password
+        print '''-
+        ----- user -----
+        -'''
 
         try:
             if self.get_argument('is_subscribed'):
