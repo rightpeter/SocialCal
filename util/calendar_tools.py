@@ -9,6 +9,7 @@ def add_event_to_user(event, user):
         hid, title, starttime, endtime, allday) VALUE(%s, %s, "%s", "%s", %s)
         ''' % (user['id'], event['title'], event['starttime'],
             event['endtime'], event['allday'])
+    print 'content: ', content
     CalendarDatabase.execute(content)
     return True
 
