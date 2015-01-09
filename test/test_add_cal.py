@@ -95,11 +95,11 @@ def test_add_244_event_to_rightpeter():
     print 'res: ', res
 
 if __name__ == '__main__':
-def test_add_240_event_to_rightpeter():
-def test_add_224_event_to_rightpeter():
-def test_add_192_event_to_rightpeter():
-def test_add_64_event_to_rightpeter():
-def test_add_255_event_to_rightpeter():
-def test_add_254_event_to_rightpeter():
-def test_add_252_event_to_rightpeter():
-def test_add_244_event_to_rightpeter():
+    test_add_240_event_to_rightpeter()
+    test_add_224_event_to_rightpeter()
+    test_add_192_event_to_rightpeter()
+    test_add_64_event_to_rightpeter()
+    test_add_255_event_to_rightpeter()
+    test_add_254_event_to_rightpeter()
+    test_add_252_event_to_rightpeter()
+    test_add_244_event_to_rightpeter()
