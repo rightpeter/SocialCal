@@ -11,7 +11,7 @@ def test_add_a_user():
     user['email'] = 'rightpeter@163.com'
     user['name'] = 'june_fiend'
     user['password'] = 'hehehehehe'
-    res = myTools.inser_a_user(user)
+    res = myTools.insert_a_user(user)
     print 'res: ', res
 
 if __name__ == '__main__':
