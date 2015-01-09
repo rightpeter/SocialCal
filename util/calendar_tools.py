@@ -48,10 +48,19 @@ def get_event_of_user_to_guest(user, guest, rel):
     relation = get_relation(user, guest, rel) 
     if relation == RELATION_FRIEND:
         pri = 64
+        shown = 128
     elif relation == RELATION_STRANGER:
         pri = 4
+        shown = 8
     else:
         pri = 255
+        shown = 0
+
     events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE hid=%s
         and privilege&%s=%s''', user['id'], pri, pri)
+
+    for event in events:
+        if event.privilege&shown != shown:
+            event['title'] = None
+
     return events
