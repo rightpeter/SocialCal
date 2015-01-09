@@ -5,10 +5,11 @@ from model import *
 from config import *
 
 def add_event_to_user(event, user):
-    CalendarDatabase.execute('''INSERT INTO `calendarTable`(
+    content = '''INSERT INTO `calendarTable`(
         hid, title, starttime, endtime, allday) VALUE(%s, %s, "%s", "%s", %s)
         ''' % (user['id'], event['title'], event['starttime'],
-            event['endtime'], event['allday']))
+            event['endtime'], event['allday'])
+    CalendarDatabase.execute(content)
     return True
 
 def get_event_of_user(user):
