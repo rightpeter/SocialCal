@@ -20,4 +20,5 @@ def test_get_events_to_guest():
     print 'events: ', events
 
 if __name__ == '__main__':
-    test_get_event()
+    test_get_events()
+    test_get_events_to_guest()
