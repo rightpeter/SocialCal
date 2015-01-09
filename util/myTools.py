@@ -48,7 +48,7 @@ def get_json(domain, url):
     #return raw_news
 
 def get_latest_news_id():
-    maxid = NewsDatabase.query("""SELECT MAX(id) AS mid FROM newsTable""")
+    maxid = CalendarDatabase.query("""SELECT MAX(id) AS mid FROM newsTable""")
     if maxid[0]['mid']:
         maxid = int(maxid[0]['mid'])
     else:
@@ -56,7 +56,7 @@ def get_latest_news_id():
     return maxid       
 
 def get_latest_news_nid():
-    maxnid = NewsDatabase.query("""SELECT MAX(nid) AS mnid FROM newsTable""")
+    maxnid = CalendarDatabase.query("""SELECT MAX(nid) AS mnid FROM newsTable""")
     if maxnid[0]['mnid']:
         maxnid = int(maxnid[0]['mnid'])
     else:
@@ -64,12 +64,12 @@ def get_latest_news_nid():
     return maxnid
 
 def get_total_news_num():
-    total = NewsDatabase.query("""SELECT COUNT(id) AS total FROM newsTable""")
+    total = CalendarDatabase.query("""SELECT COUNT(id) AS total FROM newsTable""")
     total = int(total[0]['total'])
     return total
 
 def get_oldest_news_id():
-    minid = NewsDatabase.query("""SELECT MIN(id) AS mid FROM newsTable""")
+    minid = CalendarDatabase.query("""SELECT MIN(id) AS mid FROM newsTable""")
     if minid[0]['mid']:
         minid = int(minid[0]['mid'])
     else:
@@ -77,7 +77,7 @@ def get_oldest_news_id():
     return minid
 
 def get_a_news(nid):
-    news = NewsDatabase.query("""SELECT * FROM newsTable WHERE id=%s""",
+    news = CalendarDatabase.query("""SELECT * FROM newsTable WHERE id=%s""",
             nid)
     if len(news):
         return news[0]
@@ -86,7 +86,7 @@ def get_a_news(nid):
 
 
 def get_news_list(min_id, max_id):
-    newsList = NewsDatabase.query("""SELECT * FROM newsTable WHERE id<=%s
+    newsList = CalendarDatabase.query("""SELECT * FROM newsTable WHERE id<=%s
             and id>=%s ORDER BY id DESC""", max_id, min_id)
     if len(newsList):
         return newsList
@@ -94,12 +94,12 @@ def get_news_list(min_id, max_id):
         return {}
 
 def get_password_by_email(email):
-    password = NewsDatabase.query("""SELECT password FROM usersTable WHERE
+    password = CalendarDatabase.query("""SELECT password FROM usersTable WHERE
         email=%s""", email)[0]['password']
     return password
 
 def get_email_by_name(name):
-    user_email = NewsDatabase.query("""SELECT email FROM usersTable WHERE
+    user_email = CalendarDatabase.query("""SELECT email FROM usersTable WHERE
             name=%s""", name) 
     if len(user_email):
         user_email = user_email[0]['email']
@@ -108,7 +108,7 @@ def get_email_by_name(name):
     return user_email
 
 def get_id_by_name(name):
-    user_id = NewsDatabase.query("""SELECT id FROM usersTable WHERE
+    user_id = CalendarDatabase.query("""SELECT id FROM usersTable WHERE
             name=%s""", name)
     if len(user_id):
         user_id = int(user_id[0]['id'])
@@ -117,7 +117,7 @@ def get_id_by_name(name):
     return user_id
 
 def get_name_by_email(email):
-    name = NewsDatabase.query("""SELECT name FROM usersTable WHERE
+    name = CalendarDatabase.query("""SELECT name FROM usersTable WHERE
             email=%s""", email)
     if len(name):
         name = name[0]['name']
@@ -126,7 +126,7 @@ def get_name_by_email(email):
     return name
 
 def get_name_by_id(user_id):
-    name = NewsDatabase.query("""SELECT name FROM usersTable WHERE
+    name = CalendarDatabase.query("""SELECT name FROM usersTable WHERE
             id=%s""", user_id)
     if len(name):
         name = name[0]['name']
@@ -135,7 +135,7 @@ def get_name_by_id(user_id):
     return name
 
 def get_user_by_id(user_id):
-    user = NewsDatabase.query("""SELECT id, name, email FROM usersTable
+    user = CalendarDatabase.query("""SELECT id, name, email FROM usersTable
             WHERE id=%s""", user_id)
     if len(user):
         user = user[0]
@@ -144,7 +144,7 @@ def get_user_by_id(user_id):
     return user
 
 def get_user_by_name(user_name):
-    user = NewsDatabase.query("""SELECT id, name, email FROM usersTable
+    user = CalendarDatabase.query("""SELECT id, name, email FROM usersTable
             WHERE name=%s""", user_name)
     if len(user):
         user = user[0]
@@ -153,7 +153,7 @@ def get_user_by_name(user_name):
     return user
 
 def get_salt_by_email(email):
-    salt = NewsDatabase.query("""SELECT salt FROM saltTable WHERE
+    salt = CalendarDatabase.query("""SELECT salt FROM saltTable WHERE
         email=%s""", email)
     if len(salt):
         salt = salt[0]['salt']
@@ -162,7 +162,7 @@ def get_salt_by_email(email):
     return salt
 
 def get_avatar_ext_by_email(email):
-    ext = NewsDatabase.query("""SELECT ext FROM usersTable WHERE
+    ext = CalendarDatabase.query("""SELECT ext FROM usersTable WHERE
         email=%s""", email)
     if len(ext):
         ext = ext[0]['ext']
@@ -171,7 +171,7 @@ def get_avatar_ext_by_email(email):
     return ext 
 
 def get_avatar_ext_by_id(id):
-    ext = NewsDatabase.query("""SELECT ext FROM usersTable WHERE
+    ext = CalendarDatabase.query("""SELECT ext FROM usersTable WHERE
         id=%s""", id)
     if len(ext):
         ext = ext[0]['ext']
@@ -205,14 +205,14 @@ def send_mail(to_email, sub, context):
     #    return False
 
 def update_check(email, code):
-    record = NewsDatabase.query("""SELECT * FROM checkTable WHERE
+    record = CalendarDatabase.query("""SELECT * FROM checkTable WHERE
             email=%s""", email)
     if len(record):
-        NewsDatabase.execute("""UPDATE checkTable SET code=%s,
+        CalendarDatabase.execute("""UPDATE checkTable SET code=%s,
                 check_time=%s, checked=%s WHERE email=%s""", code,
                 now()[0], '0', email)
     else:
-        NewsDatabase.execute("""INSERT checkTable(email, code, checked) VALUES(%s,
+        CalendarDatabase.execute("""INSERT checkTable(email, code, checked) VALUES(%s,
                 %s, %s)""", email, code, '0')
 
 def send_check_email(email):
@@ -236,7 +236,7 @@ def send_check_email(email):
         return False
 
 def check_email(email, code):
-    ccode = NewsDatabase.query("""SELECT code, checked FROM checkTable WHERE
+    ccode = CalendarDatabase.query("""SELECT code, checked FROM checkTable WHERE
         email=%s""", email)
     if len(ccode):
         checked = ccode[0]['checked']
@@ -244,9 +244,9 @@ def check_email(email, code):
         print 'code: ', code
         print 'ccode: ', ccode
         if ccode == code and checked == 0: 
-            NewsDatabase.execute("""UPDATE usersTable SET checked=1 WHERE
+            CalendarDatabase.execute("""UPDATE usersTable SET checked=1 WHERE
                     email=%s""", email)
-            NewsDatabase.execute("""UPDATE checkTable SET checked=1 WHERE
+            CalendarDatabase.execute("""UPDATE checkTable SET checked=1 WHERE
                     email=%s""", email)
             return True
     return False
@@ -259,7 +259,7 @@ def add_news(id):
         json_dic = json.loads(raw_news)
 
         print now(), ':', id, 'insert'
-        NewsDatabase.execute("""INSERT newsTable
+        CalendarDatabase.execute("""INSERT newsTable
             (nid,publisher,sha1,date,title,source,
             link,source_link,clean_body,body)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""" \
@@ -301,7 +301,7 @@ def post_once(httprequest):
 def is_email_exist(email):
     re_email = r'^([[a-zA-Z0-9]+[_|\_|\.]?]*[a-zA-Z0-9]+)@([[a-zA-Z0-9]+[_|\_|\.]?]*[a-zA-Z0-9]+)\.[a-zA-Z]{2,4}$'
     isEmail = bool(re.match(re_email, email, re.VERBOSE))
-    email_sql = NewsDatabase.query("""SELECT email FROM usersTable WHERE
+    email_sql = CalendarDatabase.query("""SELECT email FROM usersTable WHERE
         email=%s""", email)
     if len(email_sql) or not isEmail:
         return False
@@ -309,7 +309,7 @@ def is_email_exist(email):
         return True
 
 def is_name_exist(name):
-    name_sql = NewsDatabase.query("""SELECT name FROM usersTable WHERE
+    name_sql = CalendarDatabase.query("""SELECT name FROM usersTable WHERE
         name=%s""", name)
     if len(name_sql):
         return True 
@@ -317,7 +317,7 @@ def is_name_exist(name):
         return False 
 
 def is_user_checked(email):
-    checked = NewsDatabase.query("""SELECT checked FROM usersTable WHERE
+    checked = CalendarDatabase.query("""SELECT checked FROM usersTable WHERE
         email=%s""", email)
     if len(checked):
         return checked[0]['checked']
@@ -337,9 +337,9 @@ def insert_a_user(user):
     hashed_password = hashlib.sha512(passwd + salt).hexdigest()
 
     try:
-        NewsDatabase.execute("""INSERT usersTable(email, name, password) VALUES(%s, %s, %s)""", 
+        CalendarDatabase.execute("""INSERT usersTable(email, name, password) VALUES(%s, %s, %s)""", 
                 user['email'], user['name'], hashed_password) 
-        NewsDatabase.execute("""INSERT saltTable(email, salt, name) VALUES(%s,
+        CalendarDatabase.execute("""INSERT saltTable(email, salt, name) VALUES(%s,
                 %s, %s)""", user['email'], salt, user['name'])
         return True
     except Exception, e:
@@ -366,7 +366,7 @@ def login(email, password):
         salt = get_salt_by_email(email)
         hashed_password = hashlib.sha512(password+salt).hexdigest()
         if hashed_password == check:
-            NewsDatabase.execute("""UPDATE usersTable SET last_login=%s
+            CalendarDatabase.execute("""UPDATE usersTable SET last_login=%s
                     WHERE email=%s""",
                     now()[0],
                     email)
@@ -378,27 +378,27 @@ def login(email, password):
     return False
     
 def follow(pid, fname):
-    fid = NewsDatabase.query("""SELECT id FROM usersTable WHERE name=%s""",
+    fid = CalendarDatabase.query("""SELECT id FROM usersTable WHERE name=%s""",
             fname)
-    pname = NewsDatabase.query("""SELECT name FROM usersTable WHERE
+    pname = CalendarDatabase.query("""SELECT name FROM usersTable WHERE
             id=%s""", pid)
     if len(fid) and len(pname):
         fid = fid[0]['id']
-        record = NewsDatabase.query("""SELECT id FROM fllwTable WHERE pid=%s
+        record = CalendarDatabase.query("""SELECT id FROM fllwTable WHERE pid=%s
             and fid=%s""", pid, fid)
         if not len(record): 
-            NewsDatabase.execute("""INSERT fllwTable(pid, fid) VALUES(%s, %s)""", pid, fid)
+            CalendarDatabase.execute("""INSERT fllwTable(pid, fid) VALUES(%s, %s)""", pid, fid)
             return True
     return False
 
 def subscribe(name, subscribed):
-    user = NewsDatabase.query("""SELECT id, subscribed FROM usersTale WHERE
+    user = CalendarDatabase.query("""SELECT id, subscribed FROM usersTale WHERE
         name=%s""", name)
 
     if len(user):
         user = user[0]
         if int(user['subscribed']) != subscribed:
-            NewsDatabase.execute("""UPDATE usersTable SET subscribed=%s
+            CalendarDatabase.execute("""UPDATE usersTable SET subscribed=%s
                     WHERE name=%s""", subscribed, name)
             return True
     return False
@@ -410,9 +410,9 @@ def change_passwd(email, passwd, new_passwd, re_new_passwd):
         salt = uuid.uuid4().hex
         hashed_passwd = hashlib.sha512(passwd + salt).hexdigest()
 
-        NewsDatabase.execute("""UPDATE usersTable SET password=%s WHERE
+        CalendarDatabase.execute("""UPDATE usersTable SET password=%s WHERE
                 email=%s""", hashed_passwd, email)
-        NewsDatabase.execute("""UPDATE saltTable SET salt=%s WHERE
+        CalendarDatabase.execute("""UPDATE saltTable SET salt=%s WHERE
                 email=%s""", salt, email)
         return True
     else:
@@ -423,7 +423,7 @@ def change_name(name, new_name):
     print 'new_name: ', new_name
     if new_name and not is_name_exist(new_name):
         print 'hehe'
-        NewsDatabase.execute("""UPDATE usersTable SET name=%s WHERE
+        CalendarDatabase.execute("""UPDATE usersTable SET name=%s WHERE
             name=%s""", new_name, name)
         return True
     return False
