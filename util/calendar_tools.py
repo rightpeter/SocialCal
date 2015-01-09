@@ -46,7 +46,7 @@ def get_event_of_user(user):
 
 def get_event_of_user_to_guest(user, guest, rel):
     relation = get_relation(user, guest, rel) 
-    if relateion == RELATION_FRIEND:
+    if relation == RELATION_FRIEND:
         pri = 64
     elif relation == RELATION_STRANGER:
         pri = 4
