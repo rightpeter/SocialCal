@@ -7,8 +7,8 @@ from model import *
 import torndb
 
 def installUsersTable():
-    NewsDatabase.reconnect()
-    NewsDatabase.execute("""CREATE TABLE `usersTable`(
+    CalendarDatabase.reconnect()
+    CalendarDatabase.execute("""CREATE TABLE `usersTable`(
             `id` INT NOT NULL AUTO_INCREMENT,
             `email` VARCHAR(64) NOT NULL,
             `name` VARCHAR(32) NOT NULL,
@@ -26,8 +26,8 @@ def installUsersTable():
     """)
 
 def installFllwTable():
-    NewsDatabase.reconnect()
-    NewsDatabase.execute("""CREATE TABLE `fllwTable`(
+    CalendarDatabase.reconnect()
+    CalendarDatabase.execute("""CREATE TABLE `fllwTable`(
             `id` INT NOT NULL AUTO_INCREMENT,
             `pid` VARCHAR(64) NOT NULL,
             `fid` VARCHAR(32) NOT NULL,
@@ -38,8 +38,8 @@ def installFllwTable():
     """)
 
 def installCheckTable():
-    NewsDatabase.reconnect()
-    NewsDatabase.execute("""CREATE TABLE `checkTable`(
+    CalendarDatabase.reconnect()
+    CalendarDatabase.execute("""CREATE TABLE `checkTable`(
             `id` INT NOT NULL AUTO_INCREMENT,
             `email` VARCHAR(64) NOT NULL,
             `code` VARCHAR(64) NOT NULL,
@@ -49,9 +49,22 @@ def installCheckTable():
             DEFAULT CHARSET=utf8
     """)
 
+def installCalendarTable():
+    CalendarDatabase.reconnect()
+    CalendarDatabase.execute('''CREATE TABLE `calendarTable`(
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `hid` INT NOT NULL,
+        `title` text,
+        `starttime` timestamp,
+        `endtime` timestamp,
+        `allday` int,
+        PRIMARY KEY(id))
+        DEFAULT CHARSET=utf8
+    ''')
+
 def installSaltingTable():
-    NewsDatabase.reconnect()
-    NewsDatabase.execute("""CREATE TABLE `saltTable`(
+    CalendarDatabase.reconnect()
+    CalendarDatabase.execute("""CREATE TABLE `saltTable`(
             `id` INT NOT NULL AUTO_INCREMENT,
             `email` VARCHAR(64) NOT NULL,
             `name` VARCHAR(32) NOT NULL,
@@ -71,6 +84,9 @@ if __name__ == "__main__":
     if '-F' in sys.argv or '-A' in sys.argv:
         installFllwTable()
         
+    if '-C' in sys.argv or '-A' in sys.argv:
+        installCalendarTable()
+
     if '-CHECK' in sys.argv or '-A' in sys.argv:
         installCheckTable()
 

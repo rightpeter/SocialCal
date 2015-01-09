@@ -1,28 +1,15 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import MySQLdb
 import hashlib, uuid
-import string
-import sys
-import os
-from os import urandom
 from random import choice
-import re
+# import re
 import time
 import json
-import tornado.web
-import tornado.ioloop
-import torndb
-import math
+import tornado
 import httplib
-import json
-import pickle
 import datetime
-import threading
-import smtplib
 from email.mime.text import MIMEText
-from email.header import Header
 from model import *
 from config import *
 import traceback

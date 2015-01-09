@@ -3,7 +3,7 @@
 # import tornado.database
 import torndb
 
-NewsDatabase = torndb.Connection(
+CalendarDatabase = torndb.Connection(
     "127.0.0.1",
     "social_cal",
     "test",
