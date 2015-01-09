@@ -12,13 +12,21 @@ def test_get_events():
     events = calendar_tools.get_event_of_user(user)
     print 'events: ', events
 
-def test_get_events_to_guest():
+def test_get_events_to_friend():
     print '------------ test_get_events_to_guest ----------'
     user = myTools.get_user_by_name('Rightpeter') 
     guest = myTools.get_user_by_name('june_fiend')
     events = calendar_tools.get_event_of_user_to_guest(user, guest, 1)
     print 'events: ', events
 
+def test_get_events_to_stranger():
+    print '------------ test_get_events_to_guest ----------'
+    user = myTools.get_user_by_name('Rightpeter') 
+    guest = myTools.get_user_by_name('june_fiend')
+    events = calendar_tools.get_event_of_user_to_guest(user, guest, 0)
+    print 'events: ', events
+
 if __name__ == '__main__':
     test_get_events()
-    test_get_events_to_guest()
+    test_get_events_to_friend()
+    test_get_events_to_stranger()
