@@ -34,8 +34,8 @@ def get_privilege(event, privilege):
 
 def add_event_to_user(event, user):
     CalendarDatabase.execute('''INSERT INTO `calendarTable`(
-        hid, title, starttime, endtime, allday, privilege) VALUE(%s, %s, %s, %s, %s)
-        ''', user['id'], event['title'], event['starttime'],
+        hid, title, starttime, endtime, allday, privilege) VALUE(%s, %s, %s,
+        %s, %s, %s) ''', user['id'], event['title'], event['starttime'],
             event['endtime'], event['allday'], event['privilege'])
     return True
 
