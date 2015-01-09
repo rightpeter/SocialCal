@@ -53,5 +53,5 @@ def get_event_of_user_to_guest(user, guest, rel):
     else:
         pri = 255
     events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE hid=%s
-        and privilege&%s=%s''', user['id'], pri)
+        and privilege&%s=%s''', user['id'], pri, pri)
     return events
