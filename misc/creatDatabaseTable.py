@@ -58,6 +58,7 @@ def installCalendarTable():
         `starttime` timestamp,
         `endtime` timestamp DEFAULT '0000-00-00 00:00:00',
         `allday` int,
+        `privilege` int,
         PRIMARY KEY(id))
         DEFAULT CHARSET=utf8
     ''')

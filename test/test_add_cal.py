@@ -13,6 +13,7 @@ def test_add_birthday_to_rightpeter():
     birthday_event['starttime'] = '2015-06-22 00:00:00'
     birthday_event['endtime'] = '2015-06-22 23:59:59'
     birthday_event['allday'] = 1
+    birthday_event['privilege'] = 240
     res = calendar_tools.add_event_to_user(birthday_event, user)
     print 'res: ', res
     events = calendar_tools.get_event_of_user(user)

@@ -4,14 +4,54 @@
 from model import *
 from config import *
 
+RELATION_FRIEND = 1
+RELATION_STRANGER = 0
+def cal_privilege(privilege_list):
+    '''
+    privilege_list = [
+        friend_content, friend_space, friend_attend, friend_share,
+        stranger......,
+    ]
+    '''
+    res = 0
+    for i in privilege_list:
+        res <<= 1
+        res += i
+    return res
+
+def get_relation(user, guest, res):
+    '''
+    res = 1 : Friend
+    res = 0 : Stranger
+    '''
+    return res
+
+def get_privilege(event, privilege):
+    if privilege == RELATION_FRIEND:
+        return event['privilege'] >> 4
+    else:
+        return event['privilege'] & 15
+
 def add_event_to_user(event, user):
     CalendarDatabase.execute('''INSERT INTO `calendarTable`(
-        hid, title, starttime, endtime, allday) VALUE(%s, %s, %s, %s, %s)
+        hid, title, starttime, endtime, allday, privilege) VALUE(%s, %s, %s, %s, %s)
         ''', user['id'], event['title'], event['starttime'],
-            event['endtime'], event['allday'])
+            event['endtime'], event['allday'], event['privilege'])
     return True
 
 def get_event_of_user(user):
     events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
         hid=%s''' % user['id'])
+    return events
+
+def get_event_of_user_to_guest(user, guest, rel):
+    relation = get_relation(user, guest, rel) 
+    if relateion == RELATION_FRIEND:
+        pri = 64
+    elif relation == RELATION_STRANGER:
+        pri = 4
+    else:
+        pri = 255
+    events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE hid=%s
+        and privilege&%s=%s''', user['id'], pri)
     return events
