@@ -76,7 +76,7 @@ def get_event_of_user_to_guest(user, guest, rel):
     print '''-
     ----- in get_event -----
     -'''
-    print event
+    print events
     print '''-
     ----- in get_event -----
     -'''
