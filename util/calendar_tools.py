@@ -3,6 +3,7 @@
 
 from model import *
 from config import *
+from util.myTools as myTools 
 
 RELATION_FRIEND = 1
 RELATION_STRANGER = 0
