@@ -40,10 +40,16 @@ def add_event_to_user(event, user):
     return True
 
 def get_host_of_event(event):
+    user = myTools.get_user_by_id(event['hid'])
+    return user
 
 def get_event_by_id(eid, guest, rel):
-    event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
-            id=%s''', eid)
+    try:
+        event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
+            id=%s''', eid)[0]
+    except:
+        return {}
+
     user = get_host_of_event(event)
     relation = get_relation(user, guest, rel) 
 
