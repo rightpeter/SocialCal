@@ -40,7 +40,7 @@ def add_event_to_user(event, user):
     return True
 
 def get_event_of_user(user):
-    events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
+    events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE
         hid=%s''' % user['id'])
     return events
 
@@ -48,26 +48,26 @@ def get_event_of_user_to_guest(user, guest, rel):
     relation = get_relation(user, guest, rel) 
     if relation == RELATION_FRIEND:
         pri = 64
-        shown = 128
+        # shown = 128
     elif relation == RELATION_STRANGER:
         pri = 4
-        shown = 8
+        # shown = 8
     else:
         pri = 255
-        shown = 0
+        # shown = 0
 
-    events = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE hid=%s
+    events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE hid=%s
         and privilege&%s=%s''', user['id'], pri, pri)
 
-    for event in events:
-        if event.privilege&shown != shown:
-            event.title = None
-        
-        if relation == RELATION_FRIEND:
-            event['privilege'] >>= 4
-        elif relation == RELATION_STRANGER:
-            event['privilege'] &= 15
-        else:
-            event['privilege'] &= 0
+    # for event in events:
+    #     if event.privilege&shown != shown:
+    #         event.title = None
+    #     
+    #     if relation == RELATION_FRIEND:
+    #         event['privilege'] >>= 4
+    #     elif relation == RELATION_STRANGER:
+    #         event['privilege'] &= 15
+    #     else:
+    #         event['privilege'] &= 0
 
     return events
