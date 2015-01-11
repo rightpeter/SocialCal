@@ -73,4 +73,11 @@ def get_event_of_user_to_guest(user, guest, rel):
             print 'RELATION_OTHERS'
             event['privilege'] &= 0
 
+    print '''-
+    ----- in get_event -----
+    -'''
+    print event
+    print '''-
+    ----- in get_event -----
+    -'''
     return events
