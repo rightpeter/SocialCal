@@ -64,20 +64,10 @@ def get_event_of_user_to_guest(user, guest, rel):
             event.title = None
         
         if relation == RELATION_FRIEND:
-            print 'RELATION_FRIEND'
             event['privilege'] >>= 4
         elif relation == RELATION_STRANGER:
-            print 'RELATION_STRANGER'
             event['privilege'] &= 15
         else:
-            print 'RELATION_OTHERS'
             event['privilege'] &= 0
 
-    print '''-
-    ----- in get_event -----
-    -'''
-    print events
-    print '''-
-    ----- in get_event -----
-    -'''
     return events
