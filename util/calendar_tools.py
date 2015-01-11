@@ -39,12 +39,37 @@ def add_event_to_user(event, user):
             event['endtime'], event['allday'], event['privilege'])
     return True
 
-def get_event_of_user(user):
+def get_host_of_event(event):
+
+def get_event_by_id(eid, guest, rel):
+    event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
+            id=%s''', eid)
+    user = get_host_of_event(event)
+    relation = get_relation(user, guest, rel) 
+
+    if relation == RELATION_FRIEND:
+        event['privilege'] >>= 4
+    elif relation == RELATION_STRANGER:
+        event['privilege'] &= 15
+    else:
+        event['privilege'] &= 0
+
+    pri = 4
+    shown = 8
+    if event.privilege&shown != shown:
+        event['title'] = None
+
+    if event.privilege&pri != pri:
+        event = {}
+
+    return event
+
+def get_events_of_user(user):
     events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE
         hid=%s''' % user['id'])
     return events
 
-def get_event_of_user_to_guest(user, guest, rel):
+def get_events_of_user_to_guest(user, guest, rel):
     relation = get_relation(user, guest, rel) 
     if relation == RELATION_FRIEND:
         pri = 64
@@ -61,7 +86,7 @@ def get_event_of_user_to_guest(user, guest, rel):
 
     # for event in events:
     #     if event.privilege&shown != shown:
-    #         event.title = None
+    #         event['title'] = None
     #     
     #     if relation == RELATION_FRIEND:
     #         event['privilege'] >>= 4
