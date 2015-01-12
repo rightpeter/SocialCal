@@ -9,7 +9,7 @@ import util.calendar_tools as calendar_tools
 def test_share_a_event():
     user = myTools.get_user_by_name('Rightpeter')
     guest = myTools.get_user_by_name('june_fiend')
-    events = calendar_tools.get_event_of_user_to_guest(user, guest, 1)
+    events = calendar_tools.get_events_of_user_to_guest(user, guest, 1)
     for event in evnets:
         print 'id: ', event.id, ' title: ', event.title, ' privilege: ', event.privilege
 
