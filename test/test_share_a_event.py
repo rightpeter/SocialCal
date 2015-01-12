@@ -10,6 +10,7 @@ def test_share_a_event():
     user = myTools.get_user_by_name('Rightpeter')
     guest = myTools.get_user_by_name('june_fiend')
     events = calendar_tools.get_events_of_user_to_guest(user, guest, 1)
+    print 'events: ', events
     for event in events:
         event_info = calendar_tools.get_event_by_id(event['id'], guest, 1)
         try:
@@ -23,6 +24,7 @@ def test_share_a_event():
     res = calendar_tools.share_a_event(guest, eid, rel)
     print res
     events = calendar_tools.get_events_of_user(guest)
+    print 'events: ', events
     for event in events:
         event_info = calendar_tools.get_event_by_id(event['id'], guest, 1)
         try:
