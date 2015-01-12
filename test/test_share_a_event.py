@@ -11,7 +11,8 @@ def test_share_a_event():
     guest = myTools.get_user_by_name('june_fiend')
     events = calendar_tools.get_events_of_user_to_guest(user, guest, 1)
     for event in events:
-        print 'id: ', event.id, ' title: ', event.title, ' privilege: ', event.privilege
+        print event
+        # print 'id: ', event.id, ' title: ', event.title, ' privilege: ', event.privilege
 
     eid = int(raw_input('Input the ID of event: \n'))
     rel = int(raw_input('Input the rel of guest: \n'))
