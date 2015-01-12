@@ -14,7 +14,8 @@ def test_share_a_event():
         event_info = calendar_tools.get_event_by_id(event['id'], guest, 1)
         try:
             print 'id: ', event.id, ' title: ', event.title, ' privilege: ', event.privilege
-        except:
+        except Exception, e:
+            print e
             print 'None'
 
     eid = int(raw_input('Input the ID of event: \n'))
