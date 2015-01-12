@@ -13,8 +13,12 @@ def test_share_a_event():
     for event in evnets:
         print 'id: ', event.id, ' title: ', event.title, ' privilege: ', event.privilege
 
-    eid = raw_input('Input the ID of event: \n')
-    res = calendar_tools.share_a_event(
+    eid = int(raw_input('Input the ID of event: \n'))
+    rel = int(raw_input('Input the rel of guest: \n'))
+    res = calendar_tools.share_a_event(guest, eid, rel)
+    print res
+    events = calendar_tools.get_events_of_user(guest)
+    print events
 
 if __name__ == '__main__':
     test_share_a_event()

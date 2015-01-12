@@ -7,6 +7,11 @@ import util.myTools as myTools
 
 RELATION_FRIEND = 1
 RELATION_STRANGER = 0
+PRIVILEGE_CONTENT = 8
+PRIVILEGE_SHOWN = 4
+PRIVILEGE_ATTEND = 2
+PRIVILEGE_SHARE = 1
+
 def cal_privilege(privilege_list):
     '''
     privilege_list = [
@@ -61,12 +66,10 @@ def get_event_by_id(eid, guest, rel):
     else:
         event['privilege'] &= 0
 
-    pri = 4
-    shown = 8
-    if event.privilege&shown != shown:
+    if event.privilege&PRIVILEGE_CONTENT != PRIVILEGE_CONTENT:
         event['title'] = None
 
-    if event.privilege&pri != pri:
+    if event.privilege&PRIVILEGE_SHOWN != PRIVILEGE_SHOWN:
         event = {}
 
     return event
@@ -80,13 +83,10 @@ def get_events_of_user_to_guest(user, guest, rel):
     relation = get_relation(user, guest, rel) 
     if relation == RELATION_FRIEND:
         pri = 64
-        # shown = 128
     elif relation == RELATION_STRANGER:
         pri = 4
-        # shown = 8
     else:
         pri = 255
-        # shown = 0
 
     events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE hid=%s
         and privilege&%s=%s''', user['id'], pri, pri)
@@ -103,3 +103,26 @@ def get_events_of_user_to_guest(user, guest, rel):
     #         event['privilege'] &= 0
 
     return events
+
+def share_a_event(guest, eid, rel):
+    try:
+        event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
+            id=%s''', eid)[0]
+    except:
+        return False
+
+    user = get_host_of_event(event)
+    relation = get_relation(user, guest, rel)
+
+    if relation == RELATION_FRIEND:
+        event['privilege'] >>= 4
+    elif relation == RELATION_STRANGER:
+        event['privilege'] &= 15
+    else:
+        event['privilege'] &= 0
+
+    if event.privilege&PRIVILEGE_SHARE != PRIVILEGE_SHARE:
+        return False
+    else:
+        res = add_event_to_user(event, guest)
+        return res
