@@ -32,11 +32,13 @@ def get_relation(user, guest, res):
     '''
     return res
 
-def get_privilege(event, privilege):
-    if privilege == RELATION_FRIEND:
+def get_privilege(event, relation):
+    if relation == RELATION_FRIEND:
         return event['privilege'] >> 4
-    else:
+    elif relation == RELATION_STRANGER:
         return event['privilege'] & 15
+    else:
+        return 0
 
 def add_event_to_user(event, user):
     CalendarDatabase.execute('''INSERT INTO `calendarTable`(
@@ -53,23 +55,19 @@ def get_event_by_id(eid, guest, rel):
     try:
         event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
             id=%s''', eid)[0]
-    except:
+    except Exception, e:
+        print 'get_event_by_id: ', e
         return {}
 
     user = get_host_of_event(event)
     relation = get_relation(user, guest, rel) 
 
-    if relation == RELATION_FRIEND:
-        event['privilege'] >>= 4
-    elif relation == RELATION_STRANGER:
-        event['privilege'] &= 15
-    else:
-        event['privilege'] &= 0
+    event['guest_privilege'] = get_privilege(event, relation)
 
-    if event.privilege&PRIVILEGE_CONTENT != PRIVILEGE_CONTENT:
+    if event.guest_privilege&PRIVILEGE_CONTENT != PRIVILEGE_CONTENT:
         event['title'] = None
 
-    if event.privilege&PRIVILEGE_SHOWN != PRIVILEGE_SHOWN:
+    if event.guest_privilege&PRIVILEGE_SHOWN != PRIVILEGE_SHOWN:
         event = {}
 
     return event
@@ -108,20 +106,16 @@ def share_a_event(guest, eid, rel):
     try:
         event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
             id=%s''', eid)[0]
-    except:
+    except Exception, e:
+        print 'in share_a_event: ', e
         return False
 
     user = get_host_of_event(event)
     relation = get_relation(user, guest, rel)
 
-    if relation == RELATION_FRIEND:
-        event['privilege'] >>= 4
-    elif relation == RELATION_STRANGER:
-        event['privilege'] &= 15
-    else:
-        event['privilege'] &= 0
+    event['guest_privilege'] = get_privilege(event, relation)
 
-    if event.privilege&PRIVILEGE_SHARE != PRIVILEGE_SHARE:
+    if event.guest_privilege&PRIVILEGE_SHARE != PRIVILEGE_SHARE:
         return False
     else:
         res = add_event_to_user(event, guest)
