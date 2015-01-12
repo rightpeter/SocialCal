@@ -23,7 +23,13 @@ def test_share_a_event():
     res = calendar_tools.share_a_event(guest, eid, rel)
     print res
     events = calendar_tools.get_events_of_user(guest)
-    print events
+    for event in events:
+        event_info = calendar_tools.get_event_by_id(event['id'], guest, 1)
+        try:
+            print 'id: ', event_info.id, ' title: ', event_info.title, ' privilege: ', event_info.privilege
+        except Exception, e:
+            print e
+            print 'None'
 
 if __name__ == '__main__':
     test_share_a_event()
