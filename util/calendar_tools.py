@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+# 搜索 CalendarDatabase.execute
+# 不是： 是/
 from model import *
 from config import *
 import util.myTools as myTools 
+from bson.objectid import ObjectId
 
 RELATION_FRIEND = 1
 RELATION_STRANGER = 0
@@ -41,20 +44,26 @@ def get_privilege(event, relation):
         return 0
 
 def add_event_to_user(event, user):
-    CalendarDatabase.execute('''INSERT INTO `calendarTable`(
-        hid, title, starttime, endtime, allday, privilege) VALUE(%s, %s, %s,
-        %s, %s, %s) ''', user['id'], event['title'], event['starttime'],
-            event['endtime'], event['allday'], event['privilege'])
+    # cal = {}
+    # cal['blabla'] = xxxx
+    cal = {}
+    cal['name'] = user['name']
+    cal['title'] = user['title']
+    cal['starttime'] = user['starttime']
+    cal['endtime'] = user['endtime']
+    cal['allday'] = user['allday']
+    cal['privilege'] = user['privilege']
+    CalCollection.insert(cal)
     return True
 
 def get_host_of_event(event):
     user = myTools.get_user_by_id(event['hid'])
     return user
 
+
 def get_event_by_id(eid, guest, rel):
     try:
-        event = CalendarDatabase.query('''SELECT * FROM calendarTable WHERE
-            id=%s''', eid)[0]
+        event = CalCollection.find_one({'_id': ObjectId(eid)})
     except Exception, e:
         print 'get_event_by_id: ', e
         return {}
@@ -73,8 +82,8 @@ def get_event_by_id(eid, guest, rel):
     return event
 
 def get_events_of_user(user):
-    events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE
-        hid=%s''' % user['id'])
+    # find({'name': user['name']})
+    events = CalCollection.find({'name': user['name']})
     return events
 
 def get_events_of_user_to_guest(user, guest, rel):
@@ -86,6 +95,15 @@ def get_events_of_user_to_guest(user, guest, rel):
     else:
         pri = 255
 
+    # 你疯了么。。。。:vsp 试试
+    # hjkl 对应方向， ctrl+w 接 一个方向键就可以跳区域
+    # 这样你就能看一边敲一边了。。。来回跳多脑残
+    # 你写的不对啊 - -
+    # 我不知道对不对，先这么写
+    # find({'name': user['name'], 'privilege': pri})
+    # 卧槽。。完蛋了。。。这个好像暂时没法写。。。用到位运算了。。。妈蛋。。。
+    # QQ
+    events = CalCollection.find_one("_id", hid)
     events = CalendarDatabase.query('''SELECT id FROM calendarTable WHERE hid=%s
         and privilege&%s=%s''', user['id'], pri, pri)
 
