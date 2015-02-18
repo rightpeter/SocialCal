@@ -337,10 +337,12 @@ def insert_a_user(user):
     hashed_password = hashlib.sha512(passwd + salt).hexdigest()
 
     try:
-        CalendarDatabase.execute("""INSERT usersTable(email, name, password) VALUES(%s, %s, %s)""", 
-                user['email'], user['name'], hashed_password) 
-        CalendarDatabase.execute("""INSERT saltTable(email, salt, name) VALUES(%s,
-                %s, %s)""", user['email'], salt, user['name'])
+        user['password'] = hashed_password
+        UserCollection.insert(user)
+        salt_dict = {}
+        salt_dict['email'] = user['email']
+        salt_dict['salt'] = salt
+        SaltCollection.insert(salt_dict)
         return True
     except Exception, e:
         print traceback.print_exc()
