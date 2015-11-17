@@ -67,7 +67,7 @@ def get_event_by_id(eid, guest, rel):
         return {}
 
     user = get_host_of_event(event)
-    relation = get_relation(user, guest, rel) 
+    relation = get_relation(user, guest, rel)
 
     event['guest_privilege'] = get_privilege(event, relation)
 

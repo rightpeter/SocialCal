@@ -47,3 +47,9 @@ class SignupHandler(myTools.BaseHandler):
                         self.redirect('/signup')
         self.write('Signup Failed!')
 
+class testHandler(tornado.web.RequestHandler):
+    def get(self, openId):
+        print 'self.request: ', self.request
+
+    def post(self, openId):
+        print 'self.request: ', self.request

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys, os
+import sys
+import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import util.myTools as myTools
 import util.calendar_tools as calendar_tools
+
 
 def test_share_a_event():
     rel = int(raw_input('Input the rel of guest: \n'))
